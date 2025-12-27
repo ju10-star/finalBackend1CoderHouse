@@ -1,0 +1,21 @@
+<h1>{{product.title}}</h1>
+<p>{{product.description}}</p>
+<p>Precio: ${{product.price}}</p>
+<p>Categoría: {{product.category}}</p>
+<p>Disponibilidad: {{#if product.available}}Disponible{{else}}No disponible{{/if}}</p>
+
+<button onclick="addToCart('{{product._id}}')">Agregar al carrito</button>
+
+<script>
+async function addToCart(pid) {
+  const cartId = localStorage.getItem('cartId');
+  if (!cartId) return alert('No hay carrito activo');
+
+  await fetch(`/api/carts/${cartId}/products/${pid}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ quantity: 1 })
+  });
+  alert('Producto agregado al carrito');
+}
+</script>
